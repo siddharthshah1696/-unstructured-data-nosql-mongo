@@ -18,7 +18,7 @@ package umongo;
 	
 	//add servers to points on the hash ring
 	
-	private void addToRing(String shard){
+	public void addToRing(String shard){
 	      System.out.println();
 	      
 		  for (int i=0;i<replicas;i++){
@@ -39,12 +39,21 @@ package umongo;
 		}
 	}
 	
+	
+	public void printRange(){
+		
+	
+		for(Integer k  : ring.keySet()){
+			System.out.println(" "+k+" "+ring.get(k));
+		   }
+		
+	}
 	//returns shard assigned to a key
 	
 	public String getShard (String s){
 	
 		int hash = getMD5(s).hashCode();
-	 
+    //	    System.out.println("Hash is "+hash+"\n");
 		if (!ring.containsKey(hash)){
 	
 			SortedMap<Integer,String> tmap = ring.tailMap(hash);
