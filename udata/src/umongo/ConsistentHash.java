@@ -19,11 +19,11 @@ package umongo;
 	//add servers to points on the hash ring
 	
 	public void addToRing(String shard){
-	      System.out.println();
+	     //   System.out.println();
 	      
 		  for (int i=0;i<replicas;i++){
 	           ring.put(getMD5(shard).hashCode()+(i*1135262919),shard);
-	           System.out.println(" "+shard+" "+(getMD5(shard).hashCode()+(i*1135262919)));
+	       //    System.out.println(" "+shard+" "+(getMD5(shard).hashCode()+(i*1135262919)));
 	
 	                 
 	      }

@@ -23,7 +23,7 @@ public class Testclass {
           shards.add("PC1node5");
           shards.add("PC1node6");
           
-          
+        
           ConsistentHash c1= new ConsistentHash(shards,5);
           /*
           System.out.println("\n Ranges of shards : ");
@@ -39,13 +39,69 @@ public class Testclass {
           System.out.println(c1.getShard("12/10/2014"));
           System.out.println(c1.getShard("11/06/2013"));  
           */
-      
-          File flist = new File("/home/Sid/Desktop");
+          int cc1=0,cc2=0,cc3=0,cc4=0,cc5=0,cc6=0,cc=0;
+          File flist = new File("/home/Sid/rfiles1");
           for( File f : flist.listFiles()){
-      //      System.out.println(c1.getShard(f.lastModified().toString().substring(0,10)));
-        	  System.out.println(new SimpleDateFormat("dd-MM-yyyy").format(new Date(f.lastModified())));
+        	  String s=c1.getShard(f.getName());
+        	//  String s=c1.getShard(new SimpleDateFormat("dd/MM/yyyy").format(new Date(f.lastModified())));
+        	   if(s.equals("PC1node1"))
+        		   cc1++;
+        	   else if(s.equals("PC1node2"))
+            		   cc2++;
+        	   else if(s.equals("PC1node3"))
+            		   cc3++;
+        	   else if(s.equals("PC1node4"))
+            		   cc4++;
+        	   else if(s.equals("PC1node5"))
+            		   cc5++;
+        	   else if(s.equals("PC1node6"))
+            		   cc6++;
+        	   
+        	   cc++;
+             //   System.out.println(s+" : "+f.getName());
+        	//   System.out.println(new SimpleDateFormat("dd/MM/yyyy").format(new Date(f.lastModified())));
           }
+          
+          System.out.println(100.0*cc1/cc + "%");
+          System.out.println(100.0*cc2/cc + "%");
+          System.out.println(100.0*cc3/cc + "%");
+          System.out.println(100.0*cc4/cc + "%");
+          System.out.println(100.0*cc5/cc + "%");
+          System.out.println(100.0*cc6/cc + "%");
+  
+    
+          System.out.println("\nDONE\n");
+          final long duration = System.nanoTime() - startTime;
+          System.out.println(duration+"\n");
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          /*     
+          MongoClient mongo11 = new MongoClient("localhost",27017);
+         DB db11             = mongo11.getDB("Info");
+        //  MongoClient mongo12 = new MongoClient("localhost",27018);
+       //   DB db12             = mongo12.getDB("Info");
+        //  MongoClient mongo13 = new MongoClient("localhost",27019);
+         // DB db13             = mongo13.getDB("Info");
+       //   MongoClient mongo14 = new MongoClient("localhost",27022);
+      //    DB db14             = mongo14.getDB("Info");
+         
+       */
      }
 
 }
+
+
+
 
