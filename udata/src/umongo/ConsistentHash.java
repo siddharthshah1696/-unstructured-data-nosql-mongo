@@ -6,7 +6,7 @@ package umongo;
 	
 	public class ConsistentHash {
 	private int replicas;
-	private SortedMap<Integer,String> ring = new TreeMap<Integer,String>();
+	private TreeMap<Integer,String> ring = new TreeMap<Integer,String>();
 	
 	public ConsistentHash(List<String> shards, int replicas){		
 	    
@@ -35,8 +35,7 @@ package umongo;
 		
 		for(int i=0; i<replicas; i++){
 			ring.remove(getMD5(shard).hashCode()+(i*1135262919),shard);
-			System.out.println("Removed "+shard+" "+(getMD5(shard).hashCode()+(i*1135262919)));
-		}
+   		}
 	}
 	
 	
@@ -66,7 +65,7 @@ package umongo;
 	
 	//MD5 Hash to generate a good hash
 	
-	private static String getMD5(String input) {
+	public static String getMD5(String input) {
 	 
 		byte[] source;
 	    try {

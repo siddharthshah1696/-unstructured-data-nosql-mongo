@@ -23,27 +23,14 @@ public class Testclass {
           shards.add("PC1node5");
           shards.add("PC1node6");
           
+ 		  final long startcon = System.nanoTime();
+          ConsistentHash c1= new ConsistentHash(shards,10);
         
-          ConsistentHash c1= new ConsistentHash(shards,5);
-          /*
-          System.out.println("\n Ranges of shards : ");
-          c1.printRange();
-          System.out.println(" End of Ranges \n ");
           
-          System.out.println();
-          System.out.println(c1.getShard("01/07/2018"));
-          System.out.println(c1.getShard("31/08/2015"));
-          System.out.println(c1.getShard("31/08/2015"));
-          System.out.println(c1.getShard("03/07/2005"));
-          System.out.println(c1.getShard("01/09/2015"));
-          System.out.println(c1.getShard("12/10/2014"));
-          System.out.println(c1.getShard("11/06/2013"));  
-          */
-          int cc1=0,cc2=0,cc3=0,cc4=0,cc5=0,cc6=0,cc=0;
-          File flist = new File("/home/Sid/rfiles1");
+          long cc1=0,cc2=0,cc3=0,cc4=0,cc5=0,cc6=0,cc=0;
+          File flist = new File("/home/Sid/input50000");
           for( File f : flist.listFiles()){
         	  String s=c1.getShard(f.getName());
-        	//  String s=c1.getShard(new SimpleDateFormat("dd/MM/yyyy").format(new Date(f.lastModified())));
         	   if(s.equals("PC1node1"))
         		   cc1++;
         	   else if(s.equals("PC1node2"))
@@ -58,8 +45,6 @@ public class Testclass {
             		   cc6++;
         	   
         	   cc++;
-             //   System.out.println(s+" : "+f.getName());
-        	//   System.out.println(new SimpleDateFormat("dd/MM/yyyy").format(new Date(f.lastModified())));
           }
           
           System.out.println(100.0*cc1/cc + "%");
@@ -70,13 +55,54 @@ public class Testclass {
           System.out.println(100.0*cc6/cc + "%");
   
     
-          System.out.println("\nDONE\n");
-          final long duration = System.nanoTime() - startTime;
-          System.out.println(duration+"\n");
+          System.out.println("\nDONE\nTotal keys :"+cc+"\n");
+          long durcon = System.nanoTime() -startcon;
+          double durationcon = durcon*1.0/1000000000;
           
+          System.out.println(durcon+"\n");
+          System.out.println(durationcon+" seconds\n"+"--------------------------------------------\n");
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////          
+   
+          final long starthrw = System.nanoTime();
+          HrwHash h1 = new HrwHash(shards);          
+ 		  long hh1=0,hh2=0,hh3=0,hh4=0,hh5=0,hh6=0,hh=0;
+
+          for( File f : flist.listFiles()){
+        	  String s=c1.getShard(f.getName());
+        	  s= h1.determine_responsible_node(f.getName());
+                  	   
+        	  if(s.equals("PC1node1"))
+          		   hh1++;
+          	   else if(s.equals("PC1node2"))
+              		   hh2++;
+          	   else if(s.equals("PC1node3"))
+              		   hh3++;
+          	   else if(s.equals("PC1node4"))
+              		   hh4++;
+          	   else if(s.equals("PC1node5"))
+              		   hh5++;
+          	   else if(s.equals("PC1node6"))
+              		   hh6++;
+          	   
+          	   hh++;
+             
+         
+          }
           
+          System.out.println(100.0*hh1/hh + "%");
+          System.out.println(100.0*hh2/hh + "%");
+          System.out.println(100.0*hh3/hh + "%");
+          System.out.println(100.0*hh4/hh + "%");
+          System.out.println(100.0*hh5/hh + "%");
+          System.out.println(100.0*hh6/hh + "%");
+          System.out.println("\nDONE\nTotal keys :"+cc+"\n");
+
+          long durhrw = System.nanoTime() - starthrw;
+          double durationhrw = durhrw*1.0/1000000000;
           
-          
+          System.out.println(durhrw+"\n");
+          System.out.println(durationhrw+" seconds\n"+"--------------------------------------------\n");
           
           
           
