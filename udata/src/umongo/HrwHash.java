@@ -8,7 +8,7 @@ import java.lang.*;
 
 public class HrwHash {
 
-	private HashMap<String,Integer> list=new HashMap<String,Integer>();
+	public HashMap<String,Integer> list=new HashMap<String,Integer>();
 	
     public HrwHash(List<String> shards){
     	  for (String shard:shards){

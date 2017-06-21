@@ -24,26 +24,32 @@ public class Testclass {
           shards.add("PC1node6");
           
  		  
-          TreeSet<String> fcon1=new TreeSet<String>();
-          TreeSet<String> fcon2=new TreeSet<String>();
-          TreeSet<String> fcon3=new TreeSet<String>();
-          TreeSet<String> fcon4=new TreeSet<String>();
-          TreeSet<String> fcon5=new TreeSet<String>();
-          TreeSet<String> fcon6=new TreeSet<String>();
+          HashSet<String> fcon1=new HashSet<String>();
+          HashSet<String> fcon2=new HashSet<String>();
+          HashSet<String> fcon3=new HashSet<String>();
+          HashSet<String> fcon4=new HashSet<String>();
+          HashSet<String> fcon5=new HashSet<String>();
+          HashSet<String> fcon6=new HashSet<String>();
          
-          TreeSet<String> fhrw1=new TreeSet<String>();
-          TreeSet<String> fhrw2=new TreeSet<String>();
-          TreeSet<String> fhrw3=new TreeSet<String>();
-          TreeSet<String> fhrw4=new TreeSet<String>();
-          TreeSet<String> fhrw5=new TreeSet<String>();
-          TreeSet<String> fhrw6=new TreeSet<String>();
+          HashSet<String> fhrw1=new HashSet<String>();
+          HashSet<String> fhrw2=new HashSet<String>();
+          HashSet<String> fhrw3=new HashSet<String>();
+          HashSet<String> fhrw4=new HashSet<String>();
+          HashSet<String> fhrw5=new HashSet<String>();
+          HashSet<String> fhrw6=new HashSet<String>();
+          
+          File flist = new File("/home/Sid/input1000000");
+         
+
 /////////////////////////////////////////////////////////////////////////          
+// Insertion for consistent hashing     
+          
           final long startcon = System.nanoTime();
           ConsistentHash c1= new ConsistentHash(shards,10);
           
           
           long cc1=0,cc2=0,cc3=0,cc4=0,cc5=0,cc6=0,cc=0;
-          File flist = new File("/home/Sid/input100000");
+        
           for( File f : flist.listFiles()){
         	  String s=c1.getShard(f.getName());
         	   if(s.equals("PC1node1")){
@@ -86,11 +92,11 @@ public class Testclass {
           long durcon = System.nanoTime() -startcon;
           double durationcon = durcon*1.0/1000000000;
           
-          System.out.println(durcon+"\n");
           System.out.println(durationcon+" seconds\n"+"--------------------------------------------\n");
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////          
-   
+// Insertion  for HRW hashing  
+          
           final long starthrw = System.nanoTime();
           HrwHash h1 = new HrwHash(shards);          
  		  
@@ -98,8 +104,8 @@ public class Testclass {
           long hh1=0,hh2=0,hh3=0,hh4=0,hh5=0,hh6=0,hh=0;
 
           for( File f : flist.listFiles()){
-        	  String s=c1.getShard(f.getName());
-        	  s= h1.determine_responsible_node(f.getName());
+        	  
+        	  String s= h1.determine_responsible_node(f.getName());
                   	   
         	  if(s.equals("PC1node1")){
           		       hh1++;
@@ -142,11 +148,127 @@ public class Testclass {
           long durhrw = System.nanoTime() - starthrw;
           double durationhrw = durhrw*1.0/1000000000;
           
-          System.out.println(durhrw+"\n");
           System.out.println(durationhrw+" seconds\n"+"--------------------------------------------\n");
           
 ////////////////////////////////////////////////////////////////////////////        
-        
+// Retrieval time for consistent hashing
+          final long startconret = System.nanoTime();
+          
+          int rcc=0;
+          for( File f : flist.listFiles()){
+        	  String s=c1.getShard(f.getName());
+        	   if(s.equals("PC1node1")&&fcon1.contains(f.getAbsolutePath())){
+        		 rcc++;
+        	   }
+        	   else if(s.equals("PC1node2")&&fcon2.contains(f.getAbsolutePath())){
+            		   rcc++;
+        	  
+   	           }
+   	           else if(s.equals("PC1node3")&&fcon3.contains(f.getAbsolutePath())){
+            		   rcc++;
+        	  
+   	           }
+   	           else if(s.equals("PC1node4")&&fcon4.contains(f.getAbsolutePath())){
+            		   rcc++;
+        	  
+   	           }
+   	           else if(s.equals("PC1node5")&&fcon5.contains(f.getAbsolutePath())){
+            		   rcc++;
+        	  
+   	           }
+   	           else if(s.equals("PC1node6")&&fcon6.contains(f.getAbsolutePath())){
+            		   rcc++;
+        	  
+   	           }
+          }
+          System.out.println("\nDONE\nTotal keys :"+rcc+"\n");
+          long durconret = System.nanoTime() - startconret;
+          double durationconret = (durconret*1.0/1000000000)/cc;
+      
+          System.out.println(durationconret+" seconds\n"+"--------------------------------------------\n");
+          
+        	   
+                   
+ 
+////////////////////////////////////////////////////////////////////////////
+//Retrieval time for consistent hashing
+
+          final long starthrwret = System.nanoTime();
+          int rch=0;
+          
+          for( File f : flist.listFiles()){
+        	  String s= h1.determine_responsible_node(f.getName());
+        	  
+        	  if(s.equals("PC1node1")&&fhrw1.contains(f.getAbsolutePath())){
+        		  rch++;
+        	  }
+        	  else if(s.equals("PC1node2")&&fhrw2.contains(f.getAbsolutePath())){
+        		  rch++;
+
+        	  }
+        	  else if(s.equals("PC1node3")&&fhrw3.contains(f.getAbsolutePath())){
+        		  rch++;
+
+        	  }
+        	  else if(s.equals("PC1node4")&&fhrw4.contains(f.getAbsolutePath())){
+        		  rch++;
+
+        	  }
+        	  else if(s.equals("PC1node5")&&fhrw5.contains(f.getAbsolutePath())){
+        		  rch++;
+
+        	  }
+        	  else if(s.equals("PC1node6")&&fhrw6.contains(f.getAbsolutePath())){
+        		  rch++;
+
+        	  }
+          }
+
+          System.out.println("\nDONE\nTotal keys :"+rch+"\n");
+          long durhrwret = System.nanoTime() - starthrwret;
+          double durationhrwret = (durhrwret*1.0/1000000000)/cc;
+
+          System.out.println(durationhrwret+" seconds\n"+"--------------------------------------------\n");
+////////////////////////////////////////////////////////////////////////////
+hh1=hh2=hh3=hh4=hh5=hh6=0;
+hh=0;
+h1.list.remove("PC1node4");
+h1.list.remove("PC1node5");
+          for( File f : flist.listFiles()){
+           	   String s= h1.determine_responsible_node(f.getName());
+        	   if(s.equals("PC1node1")){
+        		   hh1++;
+        	   }
+        	   else if(s.equals("PC1node2")){
+            		   hh2++;
+   	           }
+        	   else if(s.equals("PC1node3")){
+            		   hh3++;
+ 	  		   }
+        	   else if(s.equals("PC1node4")){
+            		   hh4++;
+               }
+        	   else if(s.equals("PC1node5")){
+            		   hh5++;
+          	   }
+        	   else if(s.equals("PC1node6")){
+            		   hh6++;
+         	   }
+        	   
+        	   hh++;
+          }
+          
+          System.out.println(100.0*hh1/hh + "%");
+          System.out.println(100.0*hh2/hh + "%");
+          System.out.println(100.0*hh3/hh + "%");
+          System.out.println(100.0*hh4/hh + "%");
+          System.out.println(100.0*hh5/hh + "%");
+          System.out.println(100.0*hh6/hh + "%");
+            
+          
+          
+          
+///////////////////////////////////////////////////////////////////////////          
           
           /*     
           MongoClient mongo11 = new MongoClient("localhost",27017);
