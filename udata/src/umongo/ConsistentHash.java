@@ -9,8 +9,7 @@ package umongo;
 	private TreeMap<Integer,String> ring = new TreeMap<Integer,String>();
 	
 	public ConsistentHash(List<String> shards, int replicas){		
-	    
-		  this.replicas=replicas;
+	      this.replicas=replicas;
 	      for (String shard:shards){
 	           addToRing(shard);
 	      }
@@ -19,20 +18,13 @@ package umongo;
 	//add servers to points on the hash ring
 	
 	public void addToRing(String shard){
-	     //   System.out.println();
-	      
-		  for (int i=0;i<replicas;i++){
-	           ring.put(getMD5(shard).hashCode()+(i*1135262919),shard);
-	       //    System.out.println(" "+shard+" "+(getMD5(shard).hashCode()+(i*1135262919)));
-	
-	                 
-	      }
-		  
+	        for (int i=0;i<replicas;i++){
+	          	 ring.put(getMD5(shard).hashCode()+(i*1135262919),shard);
+	     	}
 	}
 	
 	public void removeFromRing(String shard){
 		System.out.println();
-		
 		for(int i=0; i<replicas; i++){
 			ring.remove(getMD5(shard).hashCode()+(i*1135262919),shard);
    		}
@@ -40,27 +32,19 @@ package umongo;
 	
 	
 	public void printRange(){
-		
-	
 		for(Integer k  : ring.keySet()){
 			System.out.println(" "+k+" "+ring.get(k));
-		   }
-		
+		}	
 	}
-	//returns shard assigned to a key
-	
-	public String getShard (String s){
-	
-		int hash = getMD5(s).hashCode();
-    //	    System.out.println("Hash is "+hash+"\n");
-		if (!ring.containsKey(hash)){
-	
-			SortedMap<Integer,String> tmap = ring.tailMap(hash);
-	        hash = tmap.isEmpty() ? ring.firstKey() : tmap.firstKey();
-	    
-		}
 		
-	    return ring.get(hash);
+	//returns shard assigned to a key
+	public String getShard (String s){
+		int hash = getMD5(s).hashCode();
+		if (!ring.containsKey(hash)){
+			SortedMap<Integer,String> tmap = ring.tailMap(hash);
+	        	hash = tmap.isEmpty() ? ring.firstKey() : tmap.firstKey();
+		}
+	  return ring.get(hash);
 	}
 	
 	//MD5 Hash to generate a good hash
@@ -68,14 +52,13 @@ package umongo;
 	public static String getMD5(String input) {
 	 
 		byte[] source;
-	    try {
+	        try {
 	          //Get byte according by specified coding.
 	          source = input.getBytes("UTF-8");
-	    }
-	    catch (UnsupportedEncodingException e) {
-	
-	    	  source = input.getBytes();
-	    }
+	       }
+	        catch (UnsupportedEncodingException e) {
+	          source = input.getBytes();
+	       }
 	    
 	String result = null;
 	
@@ -84,7 +67,7 @@ package umongo;
 	  try {
 	 
 		  MessageDigest md = MessageDigest.getInstance("MD5");
-	      md.update(source);
+	          md.update(source);
 	
   	    //The result should be one 128 integer
 	
@@ -102,11 +85,8 @@ package umongo;
 	  }
 	
 	  catch (Exception e) {
-	 
-		  e.printStackTrace();
-	
+	  	e.printStackTrace();
 	  }
-	  
 	return result;
    }
 
